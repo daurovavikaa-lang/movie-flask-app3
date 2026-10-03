@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Подбор фильмов</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 15px; }
+        h1, h2 { text-align: center; }
+        .section { margin: 30px 0; }
+        .movie-line {
+            padding: 10px;
+            border: 1px solid #eee;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .movie-info strong { color: #333; }
+        .btn {
+            background: #007bff;
+            color: white;
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .btn:hover { background: #0056b3; }
+        .suggest-box {
+            background: #f0f8ff;
+            border: 1px dashed #007bff;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .suggest-btn {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+        .suggest-btn:hover { background: #218838; }
+    </style>
+</head>
+<body>
+    <h1>Подбор фильмов</h1>
+
+    <!-- Блок «Что посмотреть сегодня?» -->
+    <div class="suggest-box">
+        <h2>Что посмотреть сегодня?</h2>
+        <form method="post">
+            <input type="hidden" name="action" value="suggest">
+            <button type="submit" class="suggest-btn">▶ Нажми для подсказки</button>
+        </form>
+
+        {% if suggested %}
+            <div style="margin-top:15px;">
+                <strong>{{ suggested.title }}</strong> ({{ suggested.year }}, {{ suggested.genre }}) — рейтинг {{ suggested.rating }}
+                <br>
+                <a href="/movie/{{ suggested.title|replace(' ', '_') }}" class="btn">Подробнее</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Топ-3 по рейтингу -->
+    <div class="section">
+        <h2>🏆 Топ‑3 по рейтингу</h2>
+        {% for movie in top_3 %}
+            <div class="movie-line">
+                <div class="movie-info">
+                    <strong>{{ movie.title }}</strong> ({{ movie.year }}, {{ movie.genre }}) — рейтинг {{ movie.rating }}
+                </div>
+                <a href="/movie/{{ movie.title|replace(' ', '_') }}" class="btn">Подробнее</a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Остальные фильмы -->
+    <div class="section">
+        <h2>Остальные фильмы</h2>
+        {% for movie in rest %}
+            <div class="movie-line">
+                <div class="movie-info">
+                    <strong>{{ movie.title }}</strong> ({{ movie.year }}, {{ movie.genre }}) — рейтинг {{ movie.rating }}
+                </div>
+                <a href="/movie/{{ movie.title|replace(' ', '_') }}" class="btn">Подробнее</a>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
